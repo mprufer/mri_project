@@ -27,13 +27,11 @@ function [phantom] = GeneratePhantoms(type, size, inRectSize)
         objects = [];
         objects(1).size = floor([DEFAULT_RECT_RATIO(1)* phtsize(1), DEFAULT_RECT_RATIO(2)* phtsize(2)]);
         objects(1).center = [BIG_CENTER(1) (BIG_CENTER(2)- floor(4.5 * UNIT_CENTER_DISTANCE))];
-        
-        objects(1).radius = floor( min(phtsize)/50);
               
-        startx = floor(BIG_CENTER(2) - objects(1).size(2)/2);
-        starty = floor(BIG_CENTER(1) - objects(1).size(1)/2);
-        endx = startx + objects(1).size(2)-1;
-        endy = starty + objects(1).size(1) - 1;
+        startx = floor(BIG_CENTER(2));
+        starty = floor(BIG_CENTER(1));
+        endx = objects(1).size(2)-1;
+        endy = objects(1).size(1) - 1;
         
         phantom(startx:endx, starty:endy) = ONE_INTENSITY;      
                 
