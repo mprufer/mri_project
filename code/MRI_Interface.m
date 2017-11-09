@@ -62,7 +62,7 @@ guidata(hObject, handles);
 % uiwait(handles.MRImain);
 
 %% INITIALIZING
-    imgpath = '../data/';
+    imgpath = '../data';
     %Phantom type
     set(handles.selectPhantom, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
     pht1thumb = imread(fullfile(imgpath, 'pht1_thumbnail.png'));

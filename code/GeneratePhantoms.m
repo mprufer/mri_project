@@ -24,23 +24,18 @@ function [phantom] = GeneratePhantoms(type, size, inRectSize)
     
     if(type == 2)
         %fill 5 small circles
-        circles = [];
-        circles(1).center = [BIG_CENTER(1) (BIG_CENTER(2)- floor(4.5 * UNIT_CENTER_DISTANCE))];
-        circles(2).center = [BIG_CENTER(1) (BIG_CENTER(2)- 3 * UNIT_CENTER_DISTANCE)];
-        circles(3).center = [BIG_CENTER(1) (BIG_CENTER(2)- 1 * UNIT_CENTER_DISTANCE)];
-        circles(4).center = [BIG_CENTER(1) (BIG_CENTER(2)) + UNIT_CENTER_DISTANCE];
-        circles(5).center = [BIG_CENTER(1) (BIG_CENTER(2) + floor(3.5 * UNIT_CENTER_DISTANCE))];
-
-        circles(1).radius = floor( min(phtsize)/50);
-        circles(2).radius = floor(1.5 * circles(1).radius);
-        circles(3).radius = floor(1.5 * circles(2).radius);
-        circles(4).radius = floor(1.5 * circles(3).radius);
-        circles(5).radius = floor(1.5 * circles(4).radius);
-                
-        %fill 5 small circles
-        for i = 1 : length(circles)
-            phantom = fillCircle(phantom, circles(i).center, circles(i).radius, ONE_INTENSITY);
-        end        
+        objects = [];
+        objects(1).size = floor([DEFAULT_RECT_RATIO(1)* phtsize(1), DEFAULT_RECT_RATIO(2)* phtsize(2)]);
+        objects(1).center = [BIG_CENTER(1) (BIG_CENTER(2)- floor(4.5 * UNIT_CENTER_DISTANCE))];
+        
+        objects(1).radius = floor( min(phtsize)/50);
+              
+        startx = floor(BIG_CENTER(2) - objects(1).size(2)/2);
+        starty = floor(BIG_CENTER(1) - objects(1).size(1)/2);
+        endx = startx + objects(1).size(2)-1;
+        endy = starty + objects(1).size(1) - 1;
+        
+        phantom(startx:endx, starty:endy) = ONE_INTENSITY;      
                 
     elseif (type == 1)
         %fill the rectangular
@@ -59,7 +54,6 @@ function [phantom] = GeneratePhantoms(type, size, inRectSize)
     end
     
     phantom = uint8(phantom);    
-    imwrite(phantom, sprintf('phantom_type%d.png', type));
 end
 
 function [outimg] = fillCircle(img, center, radius, FILL_VALUE)
