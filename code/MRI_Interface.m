@@ -22,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 30-Nov-2009 14:46:17
+% Last Modified by GUIDE v2.5 11-Nov-2017 14:56:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -67,15 +67,13 @@ guidata(hObject, handles);
     set(handles.selectPhantom, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
     pht1thumb = imread(fullfile(imgpath, 'pht1_thumbnail.png'));
     pht2thumb = imread(fullfile(imgpath, 'pht2_thumbnail.png'));
-    axes(handles.axes_pht1thumbnail); imshow(pht1thumb);
-    axes(handles.axes_pht2thumbnail); imshow(pht2thumb);
-
+   
     %Trajectory type
     set(handles.selectTrajectory, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
     pht1thumb = imread(fullfile(imgpath, 'trajectory_cartesian.jpg'));
     pht2thumb = imread(fullfile(imgpath, 'trajectory_radial.jpg'));
-    axes(handles.axes_Cartesian); imshow(pht1thumb);
-    axes(handles.axes_Radial); imshow(pht2thumb);
+    %axes(handles.axes_Cartesian); imshow(pht1thumb);
+    %axes(handles.axes_Radial); imshow(pht2thumb);
     
     %show defaullt image
     input_place_img = imread(fullfile(imgpath, 'input_place.jpg'));
@@ -146,10 +144,14 @@ function pushbutton_GeneratePhantom_Callback(hObject, eventdata, handles)
     
     barsize = floor([sliderWValue*DEFAULT_PHANTOMSIZE(1)/100  sliderHValue*DEFAULT_PHANTOMSIZE(2)/100]);
     
-    if (get(handles.radiobutton_phantom1, 'Value') ~= 0)
+    if (get(handles.popupmenu5, 'value') == 1)
         type = 1;
-    elseif (get(handles.radiobutton_phantom2, 'Value') ~= 0)
+    elseif (get(handles.popupmenu5, 'value') == 2)
         type = 2;
+    elseif (get(handles.popupmenu5, 'value') == 3)
+        type = 3;
+    elseif (get(handles.popupmenu5, 'value') == 4)
+        type = 4;
     else
         'You have to choose one type';
         type = -1;
@@ -343,18 +345,20 @@ function selectPhantom_SelectionChangeFcn(hObject, eventdata, handles)
 
 %retrieve GUI data, i.e. the handles structure
 handles = guidata(hObject); 
- 
-switch get(eventdata.NewValue,'Tag')   % Get Tag of selected object
-    case 'radiobutton_phantom1'
+if (get(handles.popupmenu5, 'value') == 1)
       set(handles.W_slider,'enable','on');
       set(handles.H_slider,'enable','on');
-
-    case 'radiobutton_phantom2'
+elseif (get(handles.popupmenu5, 'value') == 2)
       set(handles.W_slider,'enable','off');
       set(handles.H_slider,'enable','off');
-    otherwise
-
+elseif (get(handles.popupmenu5, 'value') == 3)
+      set(handles.W_slider,'enable','on');
+      set(handles.H_slider,'enable','on');
+elseif (get(handles.popupmenu5, 'value') == 4)
+      set(handles.W_slider,'enable','on');
+      set(handles.H_slider,'enable','on');
 end
+disp(val);
 %updates the handles structure
 guidata(hObject, handles);
 
@@ -893,3 +897,33 @@ function textHSlideValue_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 
+% --- Executes on selection change in popupmenu5.
+function popupmenu5_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu5 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu5
+
+
+hObjecet = get(handles.popupmenu5, 'value');
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Generate Phantom Button
+function pushbutton18_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton18 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
