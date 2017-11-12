@@ -65,8 +65,8 @@ guidata(hObject, handles);
     imgpath = '../data';
     %Phantom type
     set(handles.selectPhantom, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
-    pht1thumb = imread(fullfile(imgpath, 'pht1_thumbnail.png'));
-    pht2thumb = imread(fullfile(imgpath, 'pht2_thumbnail.png'));
+    %pht1thumb = imread(fullfile(imgpath, 'pht1_thumbnail.png'));
+    %pht2thumb = imread(fullfile(imgpath, 'pht2_thumbnail.png'));
    
     %Trajectory type
     set(handles.selectTrajectory, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
@@ -101,7 +101,7 @@ guidata(hObject, handles);
     handles.trajInfo.Cartesian_swapping = false; 
     handles.trajInfo.num_lines = NUM_LINES;
     handles.trajInfo.num_points_per_line = NUM_POINTS;    
-    guidata(hObject, handles);    
+    guidata(hObject, handles);  
     
 %%
 
@@ -146,8 +146,12 @@ function pushbutton_GeneratePhantom_Callback(hObject, eventdata, handles)
     
     if (get(handles.popupmenu5, 'value') == 1)
         type = 1;
+        set(handles.W_slider,'enable','on');
+        set(handles.H_slider,'enable','on');
     elseif (get(handles.popupmenu5, 'value') == 2)
         type = 2;
+        set(handles.W_slider,'enable','off');
+        set(handles.H_slider,'enable','off');
     elseif (get(handles.popupmenu5, 'value') == 3)
         type = 3;
     elseif (get(handles.popupmenu5, 'value') == 4)
@@ -345,20 +349,17 @@ function selectPhantom_SelectionChangeFcn(hObject, eventdata, handles)
 
 %retrieve GUI data, i.e. the handles structure
 handles = guidata(hObject); 
-if (get(handles.popupmenu5, 'value') == 1)
+switch get(eventdata.NewValue,'Tag')   % Get Tag of selected object
+    case 'radiobutton_phantom1'
       set(handles.W_slider,'enable','on');
       set(handles.H_slider,'enable','on');
-elseif (get(handles.popupmenu5, 'value') == 2)
+
+    case 'radiobutton_phantom2'
       set(handles.W_slider,'enable','off');
       set(handles.H_slider,'enable','off');
-elseif (get(handles.popupmenu5, 'value') == 3)
-      set(handles.W_slider,'enable','on');
-      set(handles.H_slider,'enable','on');
-elseif (get(handles.popupmenu5, 'value') == 4)
-      set(handles.W_slider,'enable','on');
-      set(handles.H_slider,'enable','on');
+    otherwise
+
 end
-disp(val);
 %updates the handles structure
 guidata(hObject, handles);
 
@@ -542,7 +543,11 @@ function selectTrajectory_SelectionChangeFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 handles = guidata(hObject); 
- 
+
+if get(handles.popupmenu5, 'value') == 1
+    disp("1");
+end
+
 switch get(eventdata.NewValue,'Tag')   % Get Tag of selected object
     case 'radiobutton_Cartesian'   
         handles.trajInfo.method = 'Cartesian';
@@ -905,9 +910,23 @@ function popupmenu5_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu5 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from popupmenu5
+switch get(handles.popupmenu5, 'value')
+    case 1
+        set(handles.W_slider,'enable','on');
+        set(handles.H_slider,'enable','on');
+    case 2
+        set(handles.W_slider,'enable','off');
+        set(handles.H_slider,'enable','off');
+    case 3
+        set(handles.W_slider,'enable','off');
+        set(handles.H_slider,'enable','off');
+    case 4
+        set(handles.W_slider,'enable','off');
+        set(handles.H_slider,'enable','off');
+end
+%set(handles.popupmenu5, 'value');
 
-
-hObjecet = get(handles.popupmenu5, 'value');
+%hObject = get(handles.popupmenu5, 'value');
 
 % --- Executes during object creation, after setting all properties.
 function popupmenu5_CreateFcn(hObject, eventdata, handles)
@@ -920,10 +939,3 @@ function popupmenu5_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-% --- Generate Phantom Button
-function pushbutton18_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton18 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
