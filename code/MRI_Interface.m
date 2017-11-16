@@ -22,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 11-Nov-2017 14:56:32
+% Last Modified by GUIDE v2.5 15-Nov-2017 18:28:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -65,15 +65,9 @@ guidata(hObject, handles);
     imgpath = '../data';
     %Phantom type
     set(handles.selectPhantom, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
-    pht1thumb = imread(fullfile(imgpath, 'pht1_thumbnail.png'));
-    pht2thumb = imread(fullfile(imgpath, 'pht2_thumbnail.png'));
-   
+    
     %Trajectory type
     set(handles.selectTrajectory, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
-    pht1thumb = imread(fullfile(imgpath, 'trajectory_cartesian.jpg'));
-    pht2thumb = imread(fullfile(imgpath, 'trajectory_radial.jpg'));
-    %axes(handles.axes_Cartesian); imshow(pht1thumb);
-    %axes(handles.axes_Radial); imshow(pht2thumb);
     
     %show defaullt image
     input_place_img = imread(fullfile(imgpath, 'input_place.jpg'));
@@ -244,28 +238,6 @@ function textSlideValue_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to textSlideValue (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-
-
-% --- Executes on button press in radiobutton_phantom1.
-function radiobutton_phantom1_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton_phantom1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of radiobutton_phantom1
-    state = get(hObject, 'Value');
-    status1 = str2double(get(handles.radiobutton_phantom1,'Value'));
-
-    'wait here';
-
-% --- Executes on button press in radiobutton_phantom2.
-function radiobutton_phantom2_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton_phantom2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of radiobutton_phantom2
-
 
 % --- Executes on slider movement.
 function H_slider_Callback(hObject, eventdata, handles)
@@ -534,26 +506,6 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-
-% --- Executes when selected object is changed in selectTrajectory.
-function selectTrajectory_SelectionChangeFcn(hObject, eventdata, handles)
-% hObject    handle to the selected object in selectTrajectory 
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-handles = guidata(hObject); 
- 
-switch get(eventdata.NewValue,'Tag')   % Get Tag of selected object
-    case 'radiobutton_Cartesian'   
-        handles.trajInfo.method = 'Cartesian';
-    case 'radiobutton_Radial'
-        handles.trajInfo.method = 'Radial';
-    otherwise
-        handles.trajInfo.method = -1;
-end
-guidata(hObject, handles);
-
-
 % --- Executes on button press in checkbox_Cartesian_swapping.
 function checkbox_Cartesian_swapping_Callback(hObject, eventdata, handles)
 % hObject    handle to checkbox_Cartesian_swapping (see GCBO)
@@ -598,18 +550,6 @@ else
     handles.outputMessage = outputMessage;
     guidata(hObject, handles);    
 end
-
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over radiobutton_Cartesian.
-function radiobutton_Cartesian_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to radiobutton_Cartesian (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-handles.newcomer = 1;
-guidata(hObject, handles);
-'wait';
-
 
 % --- Executes during object creation, after setting all properties.
 function axes_compare_CreateFcn(hObject, eventdata, handles)
@@ -713,37 +653,6 @@ else
         imwrite(uint8(imscale(handles.compareImage,0,255)), fullfile(path, fname));   
     end
 end
-
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over checkbox_Cartesian_swapping.
-function checkbox_Cartesian_swapping_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to checkbox_Cartesian_swapping (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --- Executes on button press in radiobutton_Cartesian.
-function radiobutton_Cartesian_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton_Cartesian (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of radiobutton_Cartesian
-
-handles.trajInfo.method = 'Cartesian';
-guidata(hObject, handles);
-
-
-% --- Executes on button press in radiobutton_Radial.
-function radiobutton_Radial_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton_Radial (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of radiobutton_Radial
-handles.trajInfo.method = 'Radial';
-guidata(hObject, handles);
-
 
 % --- If Enable == 'on', executes on mouse press in 5 pixel border.
 % --- Otherwise, executes on mouse press in 5 pixel border or over text_1.
@@ -896,8 +805,6 @@ function textHSlideValue_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-
-% --- Executes on selection change in popupmenu5.
 function popupmenu5_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -905,9 +812,21 @@ function popupmenu5_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu5 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from popupmenu5
-
-
-hObjecet = get(handles.popupmenu5, 'value');
+switch get(handles.popupmenu5, 'value')
+    case 1
+        set(handles.W_slider,'enable','on');
+        set(handles.H_slider,'enable','on');
+    case 2
+        set(handles.W_slider,'enable','off');
+        set(handles.H_slider,'enable','off');
+    case 3
+        set(handles.W_slider,'enable','off');
+        set(handles.H_slider,'enable','off');
+    case 4
+        set(handles.W_slider,'enable','off');
+        set(handles.H_slider,'enable','off');
+end
+%set(handles.popupmenu5, 'value');
 
 % --- Executes during object creation, after setting all properties.
 function popupmenu5_CreateFcn(hObject, eventdata, handles)
@@ -927,3 +846,224 @@ function pushbutton18_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton18 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on selection change in popupmenu6.
+function popupmenu6_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu6 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu6
+switch get(handles.popupmenu6, 'value')
+    case 1
+        handles.trajInfo.method = 'Cartesian';
+        guidata(hObject, handles);
+    case 2
+        handles.trajInfo.method = 'Radial';
+        guidata(hObject, handles);
+end
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu6_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in popupmenu7.
+function popupmenu7_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu7 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu7
+switch get(handles.popupmenu7, 'value')
+    case 1
+        set(handles.text83,'enable','on');
+        set(handles.text84,'enable','on');
+        set(handles.text85,'enable','on');
+        set(handles.text86,'enable','on');
+        set(handles.text87,'enable','off');
+        set(handles.edit7,'enable','on');
+        set(handles.edit8,'enable','on');
+        set(handles.edit9,'enable','on');
+        set(handles.edit10,'enable','on');
+        set(handles.edit11,'enable','off');
+    case 2
+        set(handles.text83,'enable','off');
+        set(handles.text84,'enable','off');
+        set(handles.text85,'enable','off');
+        set(handles.text86,'enable','off');
+        set(handles.text87,'enable','on');
+        set(handles.edit7,'enable','off');
+        set(handles.edit8,'enable','off');
+        set(handles.edit9,'enable','off');
+        set(handles.edit10,'enable','off');
+        set(handles.edit11,'enable','on');
+    case 3
+        set(handles.text83,'enable','off');
+        set(handles.text84,'enable','off');
+        set(handles.text85,'enable','off');
+        set(handles.text86,'enable','off');
+        set(handles.text87,'enable','on');
+        set(handles.edit7,'enable','off');
+        set(handles.edit8,'enable','off');
+        set(handles.edit9,'enable','off');
+        set(handles.edit10,'enable','off');
+        set(handles.edit11,'enable','on');
+end
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit7_Callback(hObject, eventdata, handles)
+% hObject    handle to edit7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit7 as text
+%        str2double(get(hObject,'String')) returns contents of edit7 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit8_Callback(hObject, eventdata, handles)
+% hObject    handle to edit8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit8 as text
+%        str2double(get(hObject,'String')) returns contents of edit8 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit9_Callback(hObject, eventdata, handles)
+% hObject    handle to edit9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit9 as text
+%        str2double(get(hObject,'String')) returns contents of edit9 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit10_Callback(hObject, eventdata, handles)
+% hObject    handle to edit10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit10 as text
+%        str2double(get(hObject,'String')) returns contents of edit10 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit11_Callback(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit11 as text
+%        str2double(get(hObject,'String')) returns contents of edit11 as a double
+txtValue = get(handles.edit11, 'String');
+txtValue = str2double(txtValue);
+remainder = txtValue - floor(txtValue);
+if(remainder ~= 0 || txtValue <= 0)
+    msgbox('K-Step must be a positive integer');
+end
+
+% --- Executes during object creation, after setting all properties.
+function edit11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton19.
+function pushbutton19_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+kStep = str2double(get(handles.edit11, 'String'));
+switch get(handles.popupmenu7, 'value')
+    case 1
+        disp("window");
+    case 2
+        Scratch_cartesian(kStep, handles.inputPhantom, handles.trajInfo)
+end
