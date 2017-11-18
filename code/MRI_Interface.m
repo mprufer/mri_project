@@ -72,7 +72,8 @@ guidata(hObject, handles);
     %show defaullt image
     input_place_img = imread(fullfile(imgpath, 'input_place.jpg'));
     mri_place_img = imread(fullfile(imgpath, 'mri_place.jpg'));
-    compare_place_img = imread(fullfile(imgpath, 'compare_place.jpg'));    
+    compare_place_img = imread(fullfile(imgpath, 'compare_place.jpg'));
+    handles.compareImage = compare_place_img;
     axes(handles.axes_phantom); imshow(input_place_img);
     axes(handles.axes_MRIphantom); imshow(mri_place_img);
     axes(handles.axes_compare); imshow(compare_place_img);
@@ -81,11 +82,19 @@ guidata(hObject, handles);
     %default values
     NUM_LINES = 128;
     NUM_POINTS = 128;
+    X_Start = 0;
+    X_End = 32;
     set(handles.text_phantomtype, 'String', '1');
     set(handles.text_trajmethod, 'String', 'Cartesian');
     set(handles.text_param1Val, 'String', num2str(NUM_LINES)); %default value
     set(handles.text_param2Val, 'String', num2str(NUM_POINTS)); %default value    
-        
+    set(handles.popupmenu7, 'value', 1);
+    set(handles.edit7, 'String', num2str(X_Start));
+    set(handles.edit9, 'String', num2str(X_Start));
+    set(handles.edit8, 'String', num2str(X_End));
+    set(handles.edit10, 'String', num2str(X_End));
+    set(handles.edit11, 'String', num2str('10'));
+    
     handles.inputPhantom = -1;
     handles.phantomType = -1;
     handles.resultPhantom = -1;
@@ -540,7 +549,11 @@ else
     imshow(resultPhantom, [0, max(resultPhantom(:))]);
     
 %     compareImg = abs(handles.inputPhantom - resultPhantom);
-   compareImg = abs(double(handles.inputPhantom) - double(resultPhantom)); 
+    N = length(handles.inputPhantom);
+    I(1:N, 1:N) = handles.inputPhantom;
+    compareImg = (log(abs(fftshift(fft2(I)))));
+    compareImg = compareImg/(max(compareImg(:))) * 255;
+    
     axes(handles.axes_compare); 
     a=set(handles.axes_compare);
     imshow(compareImg, [0 max(compareImg(:))]);
@@ -805,6 +818,7 @@ function textHSlideValue_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
+%Trajectory Menu callback
 function popupmenu5_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -848,7 +862,7 @@ function pushbutton18_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 
-% --- Executes on selection change in popupmenu6.
+% --- Executes on selection change in Trajectory Menu.
 function popupmenu6_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -878,7 +892,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on selection change in popupmenu7.
+% --- Executes on selection change in K_Step Manipulation Menu.
 function popupmenu7_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu7 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -888,16 +902,17 @@ function popupmenu7_Callback(hObject, eventdata, handles)
 %        contents{get(hObject,'Value')} returns selected item from popupmenu7
 switch get(handles.popupmenu7, 'value')
     case 1
-        set(handles.text83,'enable','on');
-        set(handles.text84,'enable','on');
-        set(handles.text85,'enable','on');
-        set(handles.text86,'enable','on');
-        set(handles.text87,'enable','off');
-        set(handles.edit7,'enable','on');
-        set(handles.edit8,'enable','on');
-        set(handles.edit9,'enable','on');
-        set(handles.edit10,'enable','on');
-        set(handles.edit11,'enable','off');
+        set(handles.text83,'enable','off');
+        set(handles.text84,'enable','off');
+        set(handles.text85,'enable','off');
+        set(handles.text86,'enable','off');
+        set(handles.text87,'enable','on');
+        set(handles.edit7,'enable','off');
+        set(handles.edit8,'enable','off');
+        set(handles.edit9,'enable','off');
+        set(handles.edit10,'enable','off');
+        set(handles.edit11,'enable','on');
+        imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
     case 2
         set(handles.text83,'enable','off');
         set(handles.text84,'enable','off');
@@ -909,17 +924,22 @@ switch get(handles.popupmenu7, 'value')
         set(handles.edit9,'enable','off');
         set(handles.edit10,'enable','off');
         set(handles.edit11,'enable','on');
-    case 3
-        set(handles.text83,'enable','off');
-        set(handles.text84,'enable','off');
-        set(handles.text85,'enable','off');
-        set(handles.text86,'enable','off');
-        set(handles.text87,'enable','on');
-        set(handles.edit7,'enable','off');
-        set(handles.edit8,'enable','off');
-        set(handles.edit9,'enable','off');
-        set(handles.edit10,'enable','off');
-        set(handles.edit11,'enable','on');
+        imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
+     case 3
+        set(handles.text83,'enable','on');
+        set(handles.text84,'enable','on');
+        set(handles.text85,'enable','on');
+        set(handles.text86,'enable','on');
+        set(handles.text87,'enable','off');
+        set(handles.edit7,'enable','on');
+        set(handles.edit8,'enable','on');
+        set(handles.edit9,'enable','on');
+        set(handles.edit10,'enable','on');
+        set(handles.edit11,'enable','off');
+        gridImg = handles.compareImage;
+        gridImg(8:8:end,:,:) = 255;
+        gridImg(:,8:8:end,:) = 255;
+        imshow(gridImg, [0 max(gridImg(:))]);
 end
 
 % --- Executes during object creation, after setting all properties.
@@ -935,7 +955,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
+%Start X-Coordinate Edit Textbox
 function edit7_Callback(hObject, eventdata, handles)
 % hObject    handle to edit7 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -943,7 +963,15 @@ function edit7_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of edit7 as text
 %        str2double(get(hObject,'String')) returns contents of edit7 as a double
-
+txtValue = get(handles.edit7, 'String');
+txtValue = str2double(txtValue);
+remainder = txtValue - floor(txtValue);
+if(remainder ~= 0 || txtValue <= 0)
+    msgbox('Value must be a positive integer');
+end
+if(txtValue > 32)
+    msgbox('Value must be less than 32');
+end
 
 % --- Executes during object creation, after setting all properties.
 function edit7_CreateFcn(hObject, eventdata, handles)
@@ -958,7 +986,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
+%End X-Coordinate Edit Textbook
 function edit8_Callback(hObject, eventdata, handles)
 % hObject    handle to edit8 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -966,7 +994,15 @@ function edit8_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of edit8 as text
 %        str2double(get(hObject,'String')) returns contents of edit8 as a double
-
+txtValue = get(handles.edit8, 'String');
+txtValue = str2double(txtValue);
+remainder = txtValue - floor(txtValue);
+if(remainder ~= 0 || txtValue <= 0)
+    msgbox('Value must be a positive integer');
+end
+if(txtValue > 32)
+    msgbox('Value must be less than 32');
+end
 
 % --- Executes during object creation, after setting all properties.
 function edit8_CreateFcn(hObject, eventdata, handles)
@@ -981,7 +1017,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
+%Start Y-Coordinate Edit Textbox
 function edit9_Callback(hObject, eventdata, handles)
 % hObject    handle to edit9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -989,7 +1025,15 @@ function edit9_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of edit9 as text
 %        str2double(get(hObject,'String')) returns contents of edit9 as a double
-
+txtValue = get(handles.edit9, 'String');
+txtValue = str2double(txtValue);
+remainder = txtValue - floor(txtValue);
+if(remainder ~= 0 || txtValue <= 0)
+    msgbox('Value must be a positive integer');
+end
+if(txtValue > 32)
+    msgbox('Value must be less than 32');
+end
 
 % --- Executes during object creation, after setting all properties.
 function edit9_CreateFcn(hObject, eventdata, handles)
@@ -1004,7 +1048,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
+%End Y-Coordinate Edit Textbook
 function edit10_Callback(hObject, eventdata, handles)
 % hObject    handle to edit10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1012,7 +1056,15 @@ function edit10_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of edit10 as text
 %        str2double(get(hObject,'String')) returns contents of edit10 as a double
-
+txtValue = get(handles.edit10, 'String');
+txtValue = str2double(txtValue);
+remainder = txtValue - floor(txtValue);
+if(remainder ~= 0 || txtValue <= 0)
+    msgbox('Value must be a positive integer');
+end
+if(txtValue > 32)
+    msgbox('Value must be less than 32');
+end
 
 % --- Executes during object creation, after setting all properties.
 function edit10_CreateFcn(hObject, eventdata, handles)
@@ -1026,8 +1078,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
-
+%K-Step edit text box
 function edit11_Callback(hObject, eventdata, handles)
 % hObject    handle to edit11 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -1061,9 +1112,26 @@ function pushbutton19_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 kStep = str2double(get(handles.edit11, 'String'));
+sXCoor = str2double(get(handles.edit7, 'String'));
+eXCoor = str2double(get(handles.edit8, 'String'));
+sYCoor = str2double(get(handles.edit9, 'String'));
+eYCoor = str2double(get(handles.edit10, 'String'));
+img = handles.compareImage;
 switch get(handles.popupmenu7, 'value')
     case 1
-        disp("window");
-    case 2
-        Scratch_cartesian(kStep, handles.inputPhantom, handles.trajInfo)
+        if kStep < 8
+            msgbox('K-Step must be greater than 8');
+        else
+            Scratch_cartesian(kStep, img, handles.trajInfo);
+        end
+     case 2
+        if kStep < 8
+            msgbox('K-Step must be greater than 8');
+        else
+            Scratch_cartesian(kStep, img, handles.trajInfo);
+        end
+    case 3
+        if (sXCoor <= 32 && sXCoor >= 0) && (eXCoor <= 32 && eXCoor >= 0) && (sYCoor <= 32 && sYCoor >= 0) && (eYCoor <= 32 && eYCoor >= 0)
+            Scratch_radial(sXCoor, eXCoor, sYCoor, eYCoor, img);
+        end
 end
