@@ -1,5 +1,4 @@
 function varargout = MRI_Interface(varargin)
-%hi
 % TEST M-file for test.fig
 %      TEST, by itself, creates a new TEST or raises the existing
 %      singleton*.
@@ -23,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 15-Nov-2017 18:28:14
+% Last Modified by GUIDE v2.5 20-Nov-2017 13:33:25
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -96,11 +95,11 @@ guidata(hObject, handles);
     set(handles.text_param1Val, 'String', num2str(NUM_LINES)); %default value
     set(handles.text_param2Val, 'String', num2str(NUM_POINTS)); %default value    
     set(handles.popupmenu7, 'value', 1);
-    set(handles.edit7, 'String', num2str(X_Start));
-    set(handles.edit9, 'String', num2str(X_Start));
-    set(handles.edit8, 'String', num2str(X_End));
-    set(handles.edit10, 'String', num2str(X_End));
-    set(handles.edit11, 'String', num2str('10'));
+    set(handles.x_start, 'String', num2str(X_Start));
+    set(handles.y_start, 'String', num2str(X_Start));
+    set(handles.x_end, 'String', num2str(X_End));
+    set(handles.y_end, 'String', num2str(X_End));
+    set(handles.kstep_num, 'String', num2str('10'));
     
     handles.inputPhantom = -1;
     handles.phantomType = -1;
@@ -943,41 +942,41 @@ function popupmenu7_Callback(hObject, eventdata, handles)
 %        contents{get(hObject,'Value')} returns selected item from popupmenu7
 switch get(handles.popupmenu7, 'value')
     case 1
-        set(handles.text83,'enable','off');
-        set(handles.text84,'enable','off');
-        set(handles.text85,'enable','off');
-        set(handles.text86,'enable','off');
-        set(handles.text87,'enable','on');
-        set(handles.edit7,'enable','off');
-        set(handles.edit8,'enable','off');
-        set(handles.edit9,'enable','off');
-        set(handles.edit10,'enable','off');
-        set(handles.edit11,'enable','on');
+        set(handles.xlabel_start,'enable','off');
+        set(handles.xlabel_end,'enable','off');
+        set(handles.ylabel_start,'enable','off');
+        set(handles.ylabel_end,'enable','off');
+        set(handles.kstep_label_num,'enable','on');
+        set(handles.x_start,'enable','off');
+        set(handles.x_end,'enable','off');
+        set(handles.y_start,'enable','off');
+        set(handles.y_end,'enable','off');
+        set(handles.kstep_num,'enable','on');
         imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
     case 2
-        set(handles.text83,'enable','off');
-        set(handles.text84,'enable','off');
-        set(handles.text85,'enable','off');
-        set(handles.text86,'enable','off');
-        set(handles.text87,'enable','on');
-        set(handles.edit7,'enable','off');
-        set(handles.edit8,'enable','off');
-        set(handles.edit9,'enable','off');
-        set(handles.edit10,'enable','off');
-        set(handles.edit11,'enable','on');
+        set(handles.xlabel_start,'enable','off');
+        set(handles.xlabel_end,'enable','off');
+        set(handles.ylabel_start,'enable','off');
+        set(handles.ylabel_end,'enable','off');
+        set(handles.kstep_label_num,'enable','on');
+        set(handles.x_start,'enable','off');
+        set(handles.x_end,'enable','off');
+        set(handles.y_start,'enable','off');
+        set(handles.y_end,'enable','off');
+        set(handles.kstep_num,'enable','on');
         
         imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
      case 3
-        set(handles.text83,'enable','on');
-        set(handles.text84,'enable','on');
-        set(handles.text85,'enable','on');
-        set(handles.text86,'enable','on');
-        set(handles.text87,'enable','off');
-        set(handles.edit7,'enable','on');
-        set(handles.edit8,'enable','on');
-        set(handles.edit9,'enable','on');
-        set(handles.edit10,'enable','on');
-        set(handles.edit11,'enable','off');
+        set(handles.xlabel_start,'enable','on');
+        set(handles.xlabel_end,'enable','on');
+        set(handles.ylabel_start,'enable','on');
+        set(handles.ylabel_end,'enable','on');
+        set(handles.kstep_label_num,'enable','off');
+        set(handles.x_start,'enable','on');
+        set(handles.x_end,'enable','on');
+        set(handles.y_start,'enable','on');
+        set(handles.y_end,'enable','on');
+        set(handles.kstep_num,'enable','off');
         gridImg = handles.compareImage;
         gridImg(8:8:end,:,:) = 255;
         gridImg(:,8:8:end,:) = 255;
@@ -998,14 +997,14 @@ end
 
 
 %Start X-Coordinate Edit Textbox
-function edit7_Callback(hObject, eventdata, handles)
-% hObject    handle to edit7 (see GCBO)
+function x_start_Callback(hObject, eventdata, handles)
+% hObject    handle to x_start (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit7 as text
-%        str2double(get(hObject,'String')) returns contents of edit7 as a double
-txtValue = get(handles.edit7, 'String');
+% Hints: get(hObject,'String') returns contents of x_start as text
+%        str2double(get(hObject,'String')) returns contents of x_start as a double
+txtValue = get(handles.x_start, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1016,8 +1015,8 @@ if(txtValue > 32)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit7_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit7 (see GCBO)
+function x_start_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to x_start (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1029,14 +1028,14 @@ end
 
 
 %End X-Coordinate Edit Textbook
-function edit8_Callback(hObject, eventdata, handles)
-% hObject    handle to edit8 (see GCBO)
+function x_end_Callback(hObject, eventdata, handles)
+% hObject    handle to x_end (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit8 as text
-%        str2double(get(hObject,'String')) returns contents of edit8 as a double
-txtValue = get(handles.edit8, 'String');
+% Hints: get(hObject,'String') returns contents of x_end as text
+%        str2double(get(hObject,'String')) returns contents of x_end as a double
+txtValue = get(handles.x_end, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1047,8 +1046,8 @@ if(txtValue > 32)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit8_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit8 (see GCBO)
+function x_end_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to x_end (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1060,14 +1059,14 @@ end
 
 
 %Start Y-Coordinate Edit Textbox
-function edit9_Callback(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
+function y_start_Callback(hObject, eventdata, handles)
+% hObject    handle to y_start (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit9 as text
-%        str2double(get(hObject,'String')) returns contents of edit9 as a double
-txtValue = get(handles.edit9, 'String');
+% Hints: get(hObject,'String') returns contents of y_start as text
+%        str2double(get(hObject,'String')) returns contents of y_start as a double
+txtValue = get(handles.y_start, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1078,8 +1077,8 @@ if(txtValue > 32)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit9_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
+function y_start_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to y_start (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1091,14 +1090,14 @@ end
 
 
 %End Y-Coordinate Edit Textbook
-function edit10_Callback(hObject, eventdata, handles)
-% hObject    handle to edit10 (see GCBO)
+function y_end_Callback(hObject, eventdata, handles)
+% hObject    handle to y_end (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit10 as text
-%        str2double(get(hObject,'String')) returns contents of edit10 as a double
-txtValue = get(handles.edit10, 'String');
+% Hints: get(hObject,'String') returns contents of y_end as text
+%        str2double(get(hObject,'String')) returns contents of y_end as a double
+txtValue = get(handles.y_end, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1109,8 +1108,8 @@ if(txtValue > 32)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit10_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit10 (see GCBO)
+function y_end_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to y_end (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1121,14 +1120,14 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 %K-Step edit text box
-function edit11_Callback(hObject, eventdata, handles)
-% hObject    handle to edit11 (see GCBO)
+function kstep_num_Callback(hObject, eventdata, handles)
+% hObject    handle to kstep_num (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit11 as text
-%        str2double(get(hObject,'String')) returns contents of edit11 as a double
-txtValue = get(handles.edit11, 'String');
+% Hints: get(hObject,'String') returns contents of kstep_num as text
+%        str2double(get(hObject,'String')) returns contents of kstep_num as a double
+txtValue = get(handles.kstep_num, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1136,8 +1135,8 @@ if(remainder ~= 0 || txtValue <= 0)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit11_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit11 (see GCBO)
+function kstep_num_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to kstep_num (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1153,11 +1152,11 @@ function pushbutton19_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton19 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-kStep = str2double(get(handles.edit11, 'String'));
-sXCoor = str2double(get(handles.edit7, 'String'));
-eXCoor = str2double(get(handles.edit8, 'String'));
-sYCoor = str2double(get(handles.edit9, 'String'));
-eYCoor = str2double(get(handles.edit10, 'String'));
+kStep = str2double(get(handles.kstep_num, 'String'));
+sXCoor = str2double(get(handles.x_start, 'String'));
+eXCoor = str2double(get(handles.x_end, 'String'));
+sYCoor = str2double(get(handles.y_start, 'String'));
+eYCoor = str2double(get(handles.y_end, 'String'));
 img = handles.compareImage;
 switch get(handles.popupmenu7, 'value')
     case 1
