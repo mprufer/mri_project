@@ -924,6 +924,7 @@ switch get(handles.popupmenu7, 'value')
         set(handles.edit9,'enable','off');
         set(handles.edit10,'enable','off');
         set(handles.edit11,'enable','on');
+        
         imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
      case 3
         set(handles.text83,'enable','on');
