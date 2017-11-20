@@ -6,7 +6,7 @@ function acq_img = MRI_Cartesian(img, klines, kpoints)
     M = floor(N*k);
     I = zeros(M(1), M(2));
     I(1:N, 1:N) = img;
-    F = fftshift(fft2(I));
+    F = fftshift(fft2(I)); %computing k-space
     F2 = zeros(M(1),M(2));
 
     waitbar(1/4)

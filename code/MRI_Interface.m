@@ -65,7 +65,13 @@ guidata(hObject, handles);
     imgpath = '../data';
     %Phantom type
     set(handles.selectPhantom, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
+<<<<<<< HEAD
     
+=======
+    %pht1thumb = imread(fullfile(imgpath, 'pht1_thumbnail.png'));
+    %pht2thumb = imread(fullfile(imgpath, 'pht2_thumbnail.png'));
+   
+>>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
     %Trajectory type
     set(handles.selectTrajectory, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
     
@@ -104,7 +110,7 @@ guidata(hObject, handles);
     handles.trajInfo.Cartesian_swapping = false; 
     handles.trajInfo.num_lines = NUM_LINES;
     handles.trajInfo.num_points_per_line = NUM_POINTS;    
-    guidata(hObject, handles);    
+    guidata(hObject, handles);  
     
 %%
 
@@ -149,8 +155,12 @@ function pushbutton_GeneratePhantom_Callback(hObject, eventdata, handles)
     
     if (get(handles.popupmenu5, 'value') == 1)
         type = 1;
+        set(handles.W_slider,'enable','on');
+        set(handles.H_slider,'enable','on');
     elseif (get(handles.popupmenu5, 'value') == 2)
         type = 2;
+        set(handles.W_slider,'enable','off');
+        set(handles.H_slider,'enable','off');
     elseif (get(handles.popupmenu5, 'value') == 3)
         type = 3;
     elseif (get(handles.popupmenu5, 'value') == 4)
@@ -326,20 +336,17 @@ function selectPhantom_SelectionChangeFcn(hObject, eventdata, handles)
 
 %retrieve GUI data, i.e. the handles structure
 handles = guidata(hObject); 
-if (get(handles.popupmenu5, 'value') == 1)
+switch get(eventdata.NewValue,'Tag')   % Get Tag of selected object
+    case 'radiobutton_phantom1'
       set(handles.W_slider,'enable','on');
       set(handles.H_slider,'enable','on');
-elseif (get(handles.popupmenu5, 'value') == 2)
+
+    case 'radiobutton_phantom2'
       set(handles.W_slider,'enable','off');
       set(handles.H_slider,'enable','off');
-elseif (get(handles.popupmenu5, 'value') == 3)
-      set(handles.W_slider,'enable','on');
-      set(handles.H_slider,'enable','on');
-elseif (get(handles.popupmenu5, 'value') == 4)
-      set(handles.W_slider,'enable','on');
-      set(handles.H_slider,'enable','on');
+    otherwise
+
 end
-disp(val);
 %updates the handles structure
 guidata(hObject, handles);
 
@@ -515,6 +522,33 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
+<<<<<<< HEAD
+=======
+
+% --- Executes when selected object is changed in selectTrajectory.
+function selectTrajectory_SelectionChangeFcn(hObject, eventdata, handles)
+% hObject    handle to the selected object in selectTrajectory 
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+handles = guidata(hObject); 
+
+if get(handles.popupmenu5, 'value') == 1
+    disp("1");
+end
+
+switch get(eventdata.NewValue,'Tag')   % Get Tag of selected object
+    case 'radiobutton_Cartesian'   
+        handles.trajInfo.method = 'Cartesian';
+    case 'radiobutton_Radial'
+        handles.trajInfo.method = 'Radial';
+    otherwise
+        handles.trajInfo.method = -1;
+end
+guidata(hObject, handles);
+
+
+>>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
 % --- Executes on button press in checkbox_Cartesian_swapping.
 function checkbox_Cartesian_swapping_Callback(hObject, eventdata, handles)
 % hObject    handle to checkbox_Cartesian_swapping (see GCBO)
@@ -841,6 +875,11 @@ switch get(handles.popupmenu5, 'value')
         set(handles.H_slider,'enable','off');
 end
 %set(handles.popupmenu5, 'value');
+<<<<<<< HEAD
+=======
+
+%hObject = get(handles.popupmenu5, 'value');
+>>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
 
 % --- Executes during object creation, after setting all properties.
 function popupmenu5_CreateFcn(hObject, eventdata, handles)
@@ -852,6 +891,7 @@ function popupmenu5_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+<<<<<<< HEAD
 end
 
 
@@ -1136,3 +1176,4 @@ switch get(handles.popupmenu7, 'value')
             Scratch_radial(sXCoor, eXCoor, sYCoor, eYCoor, img);
         end
 end
+
