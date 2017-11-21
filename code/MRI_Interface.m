@@ -65,13 +65,10 @@ guidata(hObject, handles);
     imgpath = '../data';
     %Phantom type
     set(handles.selectPhantom, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
-<<<<<<< HEAD
-    
-=======
+
     %pht1thumb = imread(fullfile(imgpath, 'pht1_thumbnail.png'));
     %pht2thumb = imread(fullfile(imgpath, 'pht2_thumbnail.png'));
    
->>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
     %Trajectory type
     set(handles.selectTrajectory, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
     
@@ -522,9 +519,6 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-<<<<<<< HEAD
-=======
-
 % --- Executes when selected object is changed in selectTrajectory.
 function selectTrajectory_SelectionChangeFcn(hObject, eventdata, handles)
 % hObject    handle to the selected object in selectTrajectory 
@@ -548,7 +542,6 @@ end
 guidata(hObject, handles);
 
 
->>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
 % --- Executes on button press in checkbox_Cartesian_swapping.
 function checkbox_Cartesian_swapping_Callback(hObject, eventdata, handles)
 % hObject    handle to checkbox_Cartesian_swapping (see GCBO)
@@ -875,11 +868,8 @@ switch get(handles.popupmenu5, 'value')
         set(handles.H_slider,'enable','off');
 end
 %set(handles.popupmenu5, 'value');
-<<<<<<< HEAD
-=======
 
 %hObject = get(handles.popupmenu5, 'value');
->>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
 
 % --- Executes during object creation, after setting all properties.
 function popupmenu5_CreateFcn(hObject, eventdata, handles)
@@ -891,7 +881,6 @@ function popupmenu5_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
-<<<<<<< HEAD
 end
 
 
@@ -965,7 +954,7 @@ switch get(handles.popupmenu7, 'value')
         set(handles.y_end,'enable','off');
         set(handles.kstep_num,'enable','on');
         
-        imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
+        %imshow(handles.compareImage1, [0 max(handles.compareImage1(:))]);
      case 3
         set(handles.xlabel_start,'enable','on');
         set(handles.xlabel_end,'enable','on');
@@ -1157,19 +1146,26 @@ sXCoor = str2double(get(handles.x_start, 'String'));
 eXCoor = str2double(get(handles.x_end, 'String'));
 sYCoor = str2double(get(handles.y_start, 'String'));
 eYCoor = str2double(get(handles.y_end, 'String'));
-img = handles.compareImage;
+img = handles.inputPhantom;
 switch get(handles.popupmenu7, 'value')
     case 1
-        if kStep < 8
-            msgbox('K-Step must be greater than 8');
+        if kStep < 1 && kStep > 16
+            msgbox('K-Step must be between 1 and 16');
         else
             Scratch_cartesian(kStep, img, handles.trajInfo);
         end
      case 2
-        if kStep < 8
-            msgbox('K-Step must be greater than 8');
+        if kStep < 1 && kStep > 16
+            msgbox('K-Step must be between 1 and 16');
         else
-            Scratch_cartesian(kStep, img, handles.trajInfo);
+            [compareImg1 outputMessage] = Scratch_cartesian(kStep, img, handles.trajInfo);
+            axes(handles.axes_compare); 
+            a=set(handles.axes_compare);
+            imshow(compareImg1, [0, max(compareImg1(:))]);
+            
+            handles.compareImage = compareImg1;
+            handles.outputMessage = outputMessage;
+            guidata(hObject, handles); 
         end
     case 3
         if (sXCoor <= 32 && sXCoor >= 0) && (eXCoor <= 32 && eXCoor >= 0) && (sYCoor <= 32 && sYCoor >= 0) && (eYCoor <= 32 && eYCoor >= 0)
