@@ -1122,6 +1122,7 @@ eXCoor = str2double(get(handles.edit8, 'String'));
 sYCoor = str2double(get(handles.edit9, 'String'));
 eYCoor = str2double(get(handles.edit10, 'String'));
 img = handles.compareImage;
+img2 = handles.inputPhantom;
 switch get(handles.popupmenu7, 'value')
     case 1
         if kStep < 8
@@ -1137,6 +1138,6 @@ switch get(handles.popupmenu7, 'value')
         end
     case 3
         if (sXCoor <= 32 && sXCoor >= 0) && (eXCoor <= 32 && eXCoor >= 0) && (sYCoor <= 32 && sYCoor >= 0) && (eYCoor <= 32 && eYCoor >= 0)
-            Scratch_radial(sXCoor, eXCoor, sYCoor, eYCoor, img);
+            Scratch_radial(sXCoor, eXCoor, sYCoor, eYCoor, img2);
         end
 end
