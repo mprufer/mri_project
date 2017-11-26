@@ -22,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 15-Nov-2017 18:28:14
+% Last Modified by GUIDE v2.5 21-Nov-2017 18:32:23
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -65,13 +65,9 @@ guidata(hObject, handles);
     imgpath = '../data';
     %Phantom type
     set(handles.selectPhantom, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
-<<<<<<< HEAD
-    
-=======
+
     %pht1thumb = imread(fullfile(imgpath, 'pht1_thumbnail.png'));
     %pht2thumb = imread(fullfile(imgpath, 'pht2_thumbnail.png'));
-   
->>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
     %Trajectory type
     set(handles.selectTrajectory, 'SelectionChangeFcn', @selectPhantom_SelectionChangeFcn);    
     
@@ -88,7 +84,7 @@ guidata(hObject, handles);
     %default values
     NUM_LINES = 128;
     NUM_POINTS = 128;
-    X_Start = 0;
+    X_Start = 1;
     X_End = 32;
     set(handles.text_phantomtype, 'String', '1');
     set(handles.text_trajmethod, 'String', 'Cartesian');
@@ -522,33 +518,6 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-<<<<<<< HEAD
-=======
-
-% --- Executes when selected object is changed in selectTrajectory.
-function selectTrajectory_SelectionChangeFcn(hObject, eventdata, handles)
-% hObject    handle to the selected object in selectTrajectory 
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-handles = guidata(hObject); 
-
-if get(handles.popupmenu5, 'value') == 1
-    disp("1");
-end
-
-switch get(eventdata.NewValue,'Tag')   % Get Tag of selected object
-    case 'radiobutton_Cartesian'   
-        handles.trajInfo.method = 'Cartesian';
-    case 'radiobutton_Radial'
-        handles.trajInfo.method = 'Radial';
-    otherwise
-        handles.trajInfo.method = -1;
-end
-guidata(hObject, handles);
-
-
->>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
 % --- Executes on button press in checkbox_Cartesian_swapping.
 function checkbox_Cartesian_swapping_Callback(hObject, eventdata, handles)
 % hObject    handle to checkbox_Cartesian_swapping (see GCBO)
@@ -875,11 +844,8 @@ switch get(handles.popupmenu5, 'value')
         set(handles.H_slider,'enable','off');
 end
 %set(handles.popupmenu5, 'value');
-<<<<<<< HEAD
-=======
 
 %hObject = get(handles.popupmenu5, 'value');
->>>>>>> 728da3e1e7c8b3382b3d0172025864707c3d8b3e
 
 % --- Executes during object creation, after setting all properties.
 function popupmenu5_CreateFcn(hObject, eventdata, handles)
@@ -891,7 +857,6 @@ function popupmenu5_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
-<<<<<<< HEAD
 end
 
 
@@ -1175,4 +1140,3 @@ switch get(handles.popupmenu7, 'value')
             Scratch_radial(sXCoor, eXCoor, sYCoor, eYCoor, img);
         end
 end
-

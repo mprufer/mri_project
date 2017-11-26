@@ -17,8 +17,8 @@ function acq_img = MRI_radial(img, lines, pointsperline)
 
     for r=-N/2:sampling:N/2
        for theta = 0:pi/delT:(pi-pi/delT)
-           Rx(i, j) = delT*r*cos(theta)+ N/2;
-           Ry(i, j) = delT*r*sin(theta)+ N/2;
+           Rx(i, j) = r*cos(-theta)+ N/2;
+           Ry(i, j) = r*sin(-theta)+ N/2;
 
            i = i+1;
        end
