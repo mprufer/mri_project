@@ -22,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 21-Nov-2017 18:32:23
+% Last Modified by GUIDE v2.5 26-Nov-2017 12:34:41
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -90,12 +90,12 @@ guidata(hObject, handles);
     set(handles.text_trajmethod, 'String', 'Cartesian');
     set(handles.text_param1Val, 'String', num2str(NUM_LINES)); %default value
     set(handles.text_param2Val, 'String', num2str(NUM_POINTS)); %default value    
-    set(handles.popupmenu7, 'value', 1);
-    set(handles.edit7, 'String', num2str(X_Start));
-    set(handles.edit9, 'String', num2str(X_Start));
-    set(handles.edit8, 'String', num2str(X_End));
-    set(handles.edit10, 'String', num2str(X_End));
-    set(handles.edit11, 'String', num2str('10'));
+    set(handles.kstepMenu, 'value', 1);
+    set(handles.xStartEdit, 'String', num2str(X_Start));
+    set(handles.yStartEdit, 'String', num2str(X_Start));
+    set(handles.xEndEdit, 'String', num2str(X_End));
+    set(handles.yEndEdit, 'String', num2str(X_End));
+    set(handles.kStepEdit, 'String', num2str('10'));
     
     handles.inputPhantom = -1;
     handles.phantomType = -1;
@@ -149,17 +149,17 @@ function pushbutton_GeneratePhantom_Callback(hObject, eventdata, handles)
     
     barsize = floor([sliderWValue*DEFAULT_PHANTOMSIZE(1)/100  sliderHValue*DEFAULT_PHANTOMSIZE(2)/100]);
     
-    if (get(handles.popupmenu5, 'value') == 1)
+    if (get(handles.phantomMenu, 'value') == 1)
         type = 1;
         set(handles.W_slider,'enable','on');
         set(handles.H_slider,'enable','on');
-    elseif (get(handles.popupmenu5, 'value') == 2)
+    elseif (get(handles.phantomMenu, 'value') == 2)
         type = 2;
         set(handles.W_slider,'enable','off');
         set(handles.H_slider,'enable','off');
-    elseif (get(handles.popupmenu5, 'value') == 3)
+    elseif (get(handles.phantomMenu, 'value') == 3)
         type = 3;
-    elseif (get(handles.popupmenu5, 'value') == 4)
+    elseif (get(handles.phantomMenu, 'value') == 4)
         type = 4;
     else
         'You have to choose one type';
@@ -822,14 +822,14 @@ function textHSlideValue_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 %Trajectory Menu callback
-function popupmenu5_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu5 (see GCBO)
+function phantomMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to phantomMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu5 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu5
-switch get(handles.popupmenu5, 'value')
+% Hints: contents = cellstr(get(hObject,'String')) returns phantomMenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from phantomMenu
+switch get(handles.phantomMenu, 'value')
     case 1
         set(handles.W_slider,'enable','on');
         set(handles.H_slider,'enable','on');
@@ -843,13 +843,13 @@ switch get(handles.popupmenu5, 'value')
         set(handles.W_slider,'enable','off');
         set(handles.H_slider,'enable','off');
 end
-%set(handles.popupmenu5, 'value');
+%set(handles.phantomMenu, 'value');
 
-%hObject = get(handles.popupmenu5, 'value');
+%hObject = get(handles.phantomMenu, 'value');
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu5_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu5 (see GCBO)
+function phantomMenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to phantomMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -868,14 +868,14 @@ function pushbutton18_Callback(hObject, eventdata, handles)
 
 
 % --- Executes on selection change in Trajectory Menu.
-function popupmenu6_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu6 (see GCBO)
+function trajectMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to trajectMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu6 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu6
-switch get(handles.popupmenu6, 'value')
+% Hints: contents = cellstr(get(hObject,'String')) returns trajectMenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from trajectMenu
+switch get(handles.trajectMenu, 'value')
     case 1
         handles.trajInfo.method = 'Cartesian';
         guidata(hObject, handles);
@@ -885,8 +885,8 @@ switch get(handles.popupmenu6, 'value')
 end
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu6_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu6 (see GCBO)
+function trajectMenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to trajectMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -898,25 +898,25 @@ end
 
 
 % --- Executes on selection change in K_Step Manipulation Menu.
-function popupmenu7_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu7 (see GCBO)
+function kstepMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to kstepMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu7 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu7
-switch get(handles.popupmenu7, 'value')
+% Hints: contents = cellstr(get(hObject,'String')) returns kstepMenu contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from kstepMenu
+switch get(handles.kstepMenu, 'value')
     case 1
         set(handles.text83,'enable','off');
         set(handles.text84,'enable','off');
         set(handles.text85,'enable','off');
         set(handles.text86,'enable','off');
         set(handles.text87,'enable','on');
-        set(handles.edit7,'enable','off');
-        set(handles.edit8,'enable','off');
-        set(handles.edit9,'enable','off');
-        set(handles.edit10,'enable','off');
-        set(handles.edit11,'enable','on');
+        set(handles.xStartEdit,'enable','off');
+        set(handles.xEndEdit,'enable','off');
+        set(handles.yStartEdit,'enable','off');
+        set(handles.yEndEdit,'enable','off');
+        set(handles.kStepEdit,'enable','on');
         imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
     case 2
         set(handles.text83,'enable','off');
@@ -924,11 +924,11 @@ switch get(handles.popupmenu7, 'value')
         set(handles.text85,'enable','off');
         set(handles.text86,'enable','off');
         set(handles.text87,'enable','on');
-        set(handles.edit7,'enable','off');
-        set(handles.edit8,'enable','off');
-        set(handles.edit9,'enable','off');
-        set(handles.edit10,'enable','off');
-        set(handles.edit11,'enable','on');
+        set(handles.xStartEdit,'enable','off');
+        set(handles.xEndEdit,'enable','off');
+        set(handles.yStartEdit,'enable','off');
+        set(handles.yEndEdit,'enable','off');
+        set(handles.kStepEdit,'enable','on');
         imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
      case 3
         set(handles.text83,'enable','on');
@@ -936,11 +936,11 @@ switch get(handles.popupmenu7, 'value')
         set(handles.text85,'enable','on');
         set(handles.text86,'enable','on');
         set(handles.text87,'enable','off');
-        set(handles.edit7,'enable','on');
-        set(handles.edit8,'enable','on');
-        set(handles.edit9,'enable','on');
-        set(handles.edit10,'enable','on');
-        set(handles.edit11,'enable','off');
+        set(handles.xStartEdit,'enable','on');
+        set(handles.xEndEdit,'enable','on');
+        set(handles.yStartEdit,'enable','on');
+        set(handles.yEndEdit,'enable','on');
+        set(handles.kStepEdit,'enable','off');
         gridImg = handles.compareImage;
         gridImg(8:8:end,:,:) = 255;
         gridImg(:,8:8:end,:) = 255;
@@ -948,8 +948,8 @@ switch get(handles.popupmenu7, 'value')
 end
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu7_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu7 (see GCBO)
+function kstepMenu_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to kstepMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -961,14 +961,14 @@ end
 
 
 %Start X-Coordinate Edit Textbox
-function edit7_Callback(hObject, eventdata, handles)
-% hObject    handle to edit7 (see GCBO)
+function xStartEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to xStartEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit7 as text
-%        str2double(get(hObject,'String')) returns contents of edit7 as a double
-txtValue = get(handles.edit7, 'String');
+% Hints: get(hObject,'String') returns contents of xStartEdit as text
+%        str2double(get(hObject,'String')) returns contents of xStartEdit as a double
+txtValue = get(handles.xStartEdit, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -979,8 +979,8 @@ if(txtValue > 32)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit7_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit7 (see GCBO)
+function xStartEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xStartEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -992,14 +992,14 @@ end
 
 
 %End X-Coordinate Edit Textbook
-function edit8_Callback(hObject, eventdata, handles)
-% hObject    handle to edit8 (see GCBO)
+function xEndEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to xEndEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit8 as text
-%        str2double(get(hObject,'String')) returns contents of edit8 as a double
-txtValue = get(handles.edit8, 'String');
+% Hints: get(hObject,'String') returns contents of xEndEdit as text
+%        str2double(get(hObject,'String')) returns contents of xEndEdit as a double
+txtValue = get(handles.xEndEdit, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1010,8 +1010,8 @@ if(txtValue > 32)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit8_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit8 (see GCBO)
+function xEndEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xEndEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1023,14 +1023,14 @@ end
 
 
 %Start Y-Coordinate Edit Textbox
-function edit9_Callback(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
+function yStartEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to yStartEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit9 as text
-%        str2double(get(hObject,'String')) returns contents of edit9 as a double
-txtValue = get(handles.edit9, 'String');
+% Hints: get(hObject,'String') returns contents of yStartEdit as text
+%        str2double(get(hObject,'String')) returns contents of yStartEdit as a double
+txtValue = get(handles.yStartEdit, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1041,8 +1041,8 @@ if(txtValue > 32)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit9_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
+function yStartEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to yStartEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1054,14 +1054,14 @@ end
 
 
 %End Y-Coordinate Edit Textbook
-function edit10_Callback(hObject, eventdata, handles)
-% hObject    handle to edit10 (see GCBO)
+function yEndEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to yEndEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit10 as text
-%        str2double(get(hObject,'String')) returns contents of edit10 as a double
-txtValue = get(handles.edit10, 'String');
+% Hints: get(hObject,'String') returns contents of yEndEdit as text
+%        str2double(get(hObject,'String')) returns contents of yEndEdit as a double
+txtValue = get(handles.yEndEdit, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1072,8 +1072,8 @@ if(txtValue > 32)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit10_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit10 (see GCBO)
+function yEndEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to yEndEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1084,14 +1084,14 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 %K-Step edit text box
-function edit11_Callback(hObject, eventdata, handles)
-% hObject    handle to edit11 (see GCBO)
+function kStepEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to kStepEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit11 as text
-%        str2double(get(hObject,'String')) returns contents of edit11 as a double
-txtValue = get(handles.edit11, 'String');
+% Hints: get(hObject,'String') returns contents of kStepEdit as text
+%        str2double(get(hObject,'String')) returns contents of kStepEdit as a double
+txtValue = get(handles.kStepEdit, 'String');
 txtValue = str2double(txtValue);
 remainder = txtValue - floor(txtValue);
 if(remainder ~= 0 || txtValue <= 0)
@@ -1099,8 +1099,8 @@ if(remainder ~= 0 || txtValue <= 0)
 end
 
 % --- Executes during object creation, after setting all properties.
-function edit11_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit11 (see GCBO)
+function kStepEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to kStepEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -1111,19 +1111,19 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in pushbutton19.
-function pushbutton19_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton19 (see GCBO)
+% --- Executes on button press in kStepRun.
+function kStepRun_Callback(hObject, eventdata, handles)
+% hObject    handle to kStepRun (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-kStep = str2double(get(handles.edit11, 'String'));
-sXCoor = str2double(get(handles.edit7, 'String'));
-eXCoor = str2double(get(handles.edit8, 'String'));
-sYCoor = str2double(get(handles.edit9, 'String'));
-eYCoor = str2double(get(handles.edit10, 'String'));
+kStep = str2double(get(handles.kStepEdit, 'String'));
+sXCoor = str2double(get(handles.xStartEdit, 'String'));
+eXCoor = str2double(get(handles.xEndEdit, 'String'));
+sYCoor = str2double(get(handles.yStartEdit, 'String'));
+eYCoor = str2double(get(handles.yEndEdit, 'String'));
 img = handles.compareImage;
 img2 = handles.inputPhantom;
-switch get(handles.popupmenu7, 'value')
+switch get(handles.kstepMenu, 'value')
     case 1
         if kStep < 8
             msgbox('K-Step must be greater than 8');

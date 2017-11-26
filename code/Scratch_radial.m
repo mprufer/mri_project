@@ -1,7 +1,15 @@
 function kStep(sXCoor, eXCoor, sYCoor, eYCoor, img)
-    xActualStart = (sXCoor-1)*8;
+    if(sXCoor == 1)
+        xActualStart = 1;
+    else
+        xActualStart = (sXCoor-1)*8;
+    end
     xActualEnd = (eXCoor)*8;
-    yActualStart = (sYCoor-1)*8;
+    if(sYCoor == 1)
+        yActualStart = 1;
+    else
+        yActualStart = (sYCoor-1)*8;
+    end
     yActualEnd = (eYCoor)*8;
     disp(xActualStart);
     disp(xActualEnd);
