@@ -3,8 +3,11 @@ function acq_img = MRI_radial(img, lines, pointsperline)
     wb = waitbar(0,'Please wait...');
     
     N1 = size(img);
+    display(N1);
     sampling = (N1(1)/pointsperline);
-    N = N1(1)*3*sampling;
+    display(sampling);
+    N = ceil(N1(1)*3*sampling); %added ceil to remove non-integer error for kstep
+    display(N);
     I = zeros(N, N);
     I(1:N1(1), 1:N1(1)) = img;
     F = fftshift(fft2(I));
