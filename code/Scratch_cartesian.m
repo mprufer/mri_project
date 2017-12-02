@@ -1,23 +1,18 @@
 function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
 
     acq_img = image;
-    %imshow(image, [0 max(image(:))]);
-    
-
 
     %kStepNo reduces the number of lines and the number of points per line
     klines = round(trajInfo.num_lines *(kStepNo/10));
     kpoints = round(trajInfo.num_points_per_line *(kStepNo/10));
     
-    display(klines);
-    display(kpoints);
-    
+    %kstep function for Cartesian
     if(strcmp(trajInfo.method, 'Cartesian'))
         wb = waitbar(0,'Please wait...');
     
         N = length(image);
         k = [round(N/klines), round(N/kpoints)];
-        %k = [kStepNo, kStepNo]; %kStepNo < 3, best image clarity
+        %k = [kStepNo, kStepNo]; %direct kStepNo < 3, best image clarity
         M = floor(N*k);
         I = zeros(M(1), M(2));
         I(1:N, 1:N) = image;
@@ -27,9 +22,6 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
 
         waitbar(1/4)
     
-        %G = fspecial('gaussian', 5, 1);
-        %F = imfilter(F, G);
-
         % sampling intervals 
         Sample = interp2(F, (M(2)/2-floor(N/2):k(2):M(2)/2+floor(N/2)-1)',(M(1)/2-floor(N/2):k(1):M(1)/2+floor(N/2)-1), 'bicubic');
 
@@ -51,6 +43,7 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
         acq_img = res_IF2;
         acq_img = acq_img/(max(acq_img(:))) * 255;
         
+        %crop image result
         [height, width, dim] = size(acq_img);
         crop_size = 199;
         ycrop_start = floor((height-crop_size)/2);
@@ -65,13 +58,15 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
     
     if(strcmp(trajInfo.method, 'Radial'))
         rad_img = MRI_radial(image, klines, kpoints);
+        
+        %crop image result
         [height, width, dim] = size(rad_img);
         crop_size = 199;
         ycrop_start = floor((height-crop_size)/2);
         ycrop_end = ycrop_start + crop_size;
         xcrop_start = floor((width-crop_size)/2);
         xcrop_end = xcrop_start + crop_size;
-       acq_img = rad_img(ycrop_start:ycrop_end, xcrop_start:xcrop_end, :);
+      	acq_img = rad_img(ycrop_start:ycrop_end, xcrop_start:xcrop_end, :);
     end
     
     
