@@ -17,6 +17,9 @@ function acq_img = MRI_Cartesian(img, klines, kpoints)
 
     Sample = interp2(F, (M(2)/2-N/2:k(2):M(2)/2+N/2-1)',(M(1)/2-N/2:k(1):M(1)+N/2-1), 'bicubic');
 
+    % sampling intervals 
+    Sample = interp2(F, (M(2)/2-N/2:k(2):M(2)/2+N/2-1)',(M(1)/2-N/2:k(1):M(1)/2+N/2-1), 'bicubic');
+
     S = size(Sample);
 
     waitbar(2/4)

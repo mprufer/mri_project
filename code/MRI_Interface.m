@@ -1131,10 +1131,17 @@ switch get(handles.kstepMenu, 'value')
             Scratch_cartesian(kStep, img, handles.trajInfo);
         end
      case 2
-        if kStep < 8
-            msgbox('K-Step must be greater than 8');
+        if (kStep < 7 || kStep > 16)   %kStep < 1 to show direct k = [kStepNo, kStepNo] in Scratch
+            msgbox('K-Step must be in the range 7 to 16');
         else
-            Scratch_cartesian(kStep, img, handles.trajInfo);
+            %shows the result in the compare images panel
+            [klines kpoints handles.compareImage] = Scratch_cartesian(kStep, img2, handles.trajInfo);
+            
+            %update number of lines and number of points per line on gui
+            set(handles.text_param1Val, 'String', num2str(klines));
+            set(handles.text_param2Val, 'String', num2str(kpoints));
+            imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
+            guidata(hObject, handles);  
         end
     case 3
         if (sXCoor <= 32 && sXCoor >= 0) && (eXCoor <= 32 && eXCoor >= 0) && (sYCoor <= 32 && sYCoor >= 0) && (eYCoor <= 32 && eYCoor >= 0)
