@@ -28,7 +28,7 @@ function kStep(sXCoor, eXCoor, sYCoor, eYCoor, img)
     I = abs(ifft2((I)));
     I = uint8(real(I));
     %I = I/(max(I(:))) * 255;
-  
+
     imshow(I);
 end
 
