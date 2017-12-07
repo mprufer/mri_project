@@ -62,16 +62,20 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
     end
     
     if(strcmp(trajInfo.method, 'Radial'))
-        rad_img = MRI_radial(image, klines, kpoints);
-        
-        %crop image result
-        [height, width, dim] = size(rad_img);
-        crop_size = 199;
+         %crop image result
+        [height, width, dim] = size(image);
+        crop_size = floor(255*(kStepNo/20));
+        %if(kStepNo == 8 || kStepNo == 9 || kStepNo == 11 || kStepNo == 14 )
+        %    crop_size = crop_size + 1;
+        %end
         ycrop_start = floor((height-crop_size)/2);
         ycrop_end = ycrop_start + crop_size;
         xcrop_start = floor((width-crop_size)/2);
         xcrop_end = xcrop_start + crop_size;
-      	acq_img = rad_img(ycrop_start:ycrop_end, xcrop_start:xcrop_end, :);
+      	image = image(ycrop_start:ycrop_end, xcrop_start:xcrop_end, :);
+        acq_img = MRI_radial(image, klines, kpoints);
+        
+
     end
     
     

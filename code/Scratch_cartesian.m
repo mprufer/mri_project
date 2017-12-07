@@ -49,7 +49,7 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
     end
     
     if(strcmp(trajInfo.method, 'Radial'))
-        rad_img = MRI_radial(image, klines, kpoints);
+        acq_img = MRI_radial(image, klines, kpoints);
         
     end
     
