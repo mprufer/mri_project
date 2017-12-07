@@ -22,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 26-Nov-2017 12:34:41
+% Last Modified by GUIDE v2.5 06-Dec-2017 23:01:21
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1145,6 +1145,48 @@ switch get(handles.kstepMenu, 'value')
         end
     case 3
         if (sXCoor <= 32 && sXCoor >= 0) && (eXCoor <= 32 && eXCoor >= 0) && (sYCoor <= 32 && sYCoor >= 0) && (eYCoor <= 32 && eYCoor >= 0)
-            Scratch_radial(sXCoor, eXCoor, sYCoor, eYCoor, img2);
+            [resultImg outputMessage] = Scratch_radial(sXCoor, eXCoor, sYCoor, eYCoor, img2);
+            axes(handles.axes_compare); 
+            a=set(handles.axes_compare);
+            imshow(resultImg, [0 max(resultImg(:))]);
+            handles.compareImage = resultImg;
+            guidata(hObject, handles);
         end
 end
+
+
+% --- Executes on button press in loadImage.
+function loadImage_Callback(hObject, eventdata, handles)
+% hObject    handle to loadImage (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+filter = '*.jpeg;*.jpg;*.png;*.bmp';
+selectedFile = uigetfile(fullfile('~/' , filter));
+image = imread(selectedFile);
+axes(handles.axes_phantom); 
+a=set(handles.axes_phantom);
+image = imresize(image, [256 256]);
+image = rgb2gray(image);
+imshow(image);
+handles.inputPhantom = image;
+% Update handles structure
+guidata(hObject, handles);
+
+
+% --- Executes on button press in KSpaceTraj.
+function KSpaceTraj_Callback(hObject, eventdata, handles)
+% hObject    handle to KSpaceTraj (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+    
+ [resultPhantom outputMessage] =  AcquireMRIImage(handles.compareImage, handles.trajInfo);
+    %msgbox(outputMessage, 'MRI accquisiton message');
+    %[handles.compareImg] = CompareImages(handles.inputPhantom, resultPhantom);        
+    axes(handles.axes_MRIphantom); 
+    a=set(handles.axes_MRIphantom);    
+    imshow(resultPhantom, [0, max(resultPhantom(:))]);
+    handles.resultPhantom = resultPhantom;
+    handles.outputMessage = outputMessage;
+    guidata(hObject, handles);   

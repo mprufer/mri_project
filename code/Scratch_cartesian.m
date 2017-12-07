@@ -1,7 +1,6 @@
 function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
 
     acq_img = image;
-
     %kStepNo reduces the number of lines and the number of points per line
     klines = round(trajInfo.num_lines *(kStepNo/10));
     kpoints = round(trajInfo.num_points_per_line *(kStepNo/10));

@@ -1,4 +1,4 @@
-function kStep(sXCoor, eXCoor, sYCoor, eYCoor, img)
+function [resultImg message] = kStep(sXCoor, eXCoor, sYCoor, eYCoor, img)
     if(sXCoor == 1)
         xActualStart = 1;
     else
@@ -11,10 +11,6 @@ function kStep(sXCoor, eXCoor, sYCoor, eYCoor, img)
         yActualStart = (sYCoor-1)*8;
     end
     yActualEnd = (eYCoor)*8;
-    disp(xActualStart);
-    disp(xActualEnd);
-    disp(yActualStart);
-    disp(yActualEnd);
     
     N1 = size(img);
     xTotal = xActualEnd - xActualStart;
@@ -27,9 +23,10 @@ function kStep(sXCoor, eXCoor, sYCoor, eYCoor, img)
     
     I = abs(ifft2((I)));
     I = uint8(real(I));
-    %I = I/(max(I(:))) * 255;
-  
-    imshow(I);
+    
+    %resize image
+    resultImg = imresize(I, [256 256]);
+    message = 'Image succesfully rendered';
 end
 
 
