@@ -12,6 +12,9 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
         
         [height, width, dim] = size(image);
         crop_size = floor(255*(kStepNo/20));
+        if(kStepNo == 8 || kStepNo == 9 || kStepNo == 11 || kStepNo == 14 )
+            crop_size = crop_size + 1;
+        end
         ycrop_start = floor((height-crop_size)/2);
         ycrop_end = ycrop_start + crop_size;
         xcrop_start = floor((width-crop_size)/2);
