@@ -1162,8 +1162,10 @@ function loadImage_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 filter = '*.jpeg;*.jpg;*.png;*.bmp';
-selectedFile = uigetfile(fullfile('~/' , filter));
+selectedFile = uigetfile({'*.jpeg;*.jpg;*.png;*.bmp'}, 'Pick a file');
+
 image = imread(selectedFile);
+
 axes(handles.axes_phantom); 
 a=set(handles.axes_phantom);
 image = imresize(image, [256 256]);
