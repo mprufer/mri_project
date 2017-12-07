@@ -22,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 06-Dec-2017 23:01:21
+% Last Modified by GUIDE v2.5 07-Dec-2017 11:51:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1162,7 +1162,7 @@ function loadImage_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 filter = '*.jpeg;*.jpg;*.png;*.bmp';
-selectedFile = uigetfile(fullfile('~/' , filter));
+selectedFile = uigetfile({'*.jpeg;*.jpg;*.png;*.bmp'}, 'Pick a file');
 image = imread(selectedFile);
 axes(handles.axes_phantom); 
 a=set(handles.axes_phantom);
@@ -1182,11 +1182,26 @@ function KSpaceTraj_Callback(hObject, eventdata, handles)
 
     
  [resultPhantom outputMessage] =  AcquireMRIImage(handles.compareImage, handles.trajInfo);
-    %msgbox(outputMessage, 'MRI accquisiton message');
-    %[handles.compareImg] = CompareImages(handles.inputPhantom, resultPhantom);        
-    axes(handles.axes_MRIphantom); 
+  %msgbox(outputMessage, 'MRI accquisiton message');
+  %[handles.compareImg] = CompareImages(handles.inputPhantom, resultPhantom);        
+  axes(handles.axes_MRIphantom); 
     a=set(handles.axes_MRIphantom);    
     imshow(resultPhantom, [0, max(resultPhantom(:))]);
     handles.resultPhantom = resultPhantom;
     handles.outputMessage = outputMessage;
     guidata(hObject, handles);   
+
+
+% --- Executes on button press in Reset.
+function Reset_Callback(hObject, eventdata, handles)
+% hObject    handle to Reset (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+imgpath = '../data';
+handles.inputPhantom = imread(fullfile(imgpath, 'input_place.jpg'));
+axes(handles.axes_phantom); imshow(handles.inputPhantom);
+handles.resultPhantom = imread(fullfile(imgpath, 'mri_place.jpg'));
+axes(handles.axes_MRIphantom); imshow(handles.resultPhantom);
+handles.compareImage = imread(fullfile(imgpath, 'compare_place.jpg'));
+axes(handles.axes_compare); imshow(handles.compareImage);
+guidata(hObject, handles); 
