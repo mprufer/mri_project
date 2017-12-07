@@ -22,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 06-Dec-2017 23:01:21
+% Last Modified by GUIDE v2.5 07-Dec-2017 11:51:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1125,10 +1125,17 @@ img = handles.compareImage;
 img2 = handles.inputPhantom;
 switch get(handles.kstepMenu, 'value')
     case 1
-        if kStep < 8
+        if (kStep < 7 || kStep > 16)
             msgbox('K-Step must be greater than 8');
         else
-            Scratch_cartesian(kStep, img, handles.trajInfo);
+            %shows the result in the compare images panel
+            [klines kpoints handles.compareImage] = AccquisiteMRIImage(kStep, img2, handles.trajInfo);
+            
+            %update number of lines and number of points per line on gui
+            set(handles.text_param1Val, 'String', num2str(klines));
+            set(handles.text_param2Val, 'String', num2str(kpoints));
+            imshow(handles.compareImage, [0 max(handles.compareImage(:))]);
+            guidata(hObject, handles);  
         end
      case 2
         if (kStep < 7 || kStep > 16)   %kStep < 1 to show direct k = [kStepNo, kStepNo] in Scratch
@@ -1184,11 +1191,26 @@ function KSpaceTraj_Callback(hObject, eventdata, handles)
 
     
  [resultPhantom outputMessage] =  AcquireMRIImage(handles.compareImage, handles.trajInfo);
-    %msgbox(outputMessage, 'MRI accquisiton message');
-    %[handles.compareImg] = CompareImages(handles.inputPhantom, resultPhantom);        
-    axes(handles.axes_MRIphantom); 
+  %msgbox(outputMessage, 'MRI accquisiton message');
+  %[handles.compareImg] = CompareImages(handles.inputPhantom, resultPhantom);        
+  axes(handles.axes_MRIphantom); 
     a=set(handles.axes_MRIphantom);    
     imshow(resultPhantom, [0, max(resultPhantom(:))]);
     handles.resultPhantom = resultPhantom;
     handles.outputMessage = outputMessage;
     guidata(hObject, handles);   
+
+
+% --- Executes on button press in Reset.
+function Reset_Callback(hObject, eventdata, handles)
+% hObject    handle to Reset (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+imgpath = '../data';
+handles.inputPhantom = imread(fullfile(imgpath, 'input_place.jpg'));
+axes(handles.axes_phantom); imshow(handles.inputPhantom);
+handles.resultPhantom = imread(fullfile(imgpath, 'mri_place.jpg'));
+axes(handles.axes_MRIphantom); imshow(handles.resultPhantom);
+handles.compareImage = imread(fullfile(imgpath, 'compare_place.jpg'));
+axes(handles.axes_compare); imshow(handles.compareImage);
+guidata(hObject, handles); 

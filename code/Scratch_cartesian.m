@@ -8,7 +8,7 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
     %kstep function for Cartesian
     if(strcmp(trajInfo.method, 'Cartesian'))
         wb = waitbar(0,'Please wait...');
-
+        
         N = length(image);
         k = [round(N/klines), round(N/kpoints)];
         %k = [kStepNo, kStepNo]; %direct kStepNo < 3, best image clarity
@@ -44,15 +44,6 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
         acq_img = res_IF2;
         acq_img = acq_img/(max(acq_img(:))) * 255;
         
-        %crop image result
-        [height, width, dim] = size(acq_img);
-        crop_size = 199;
-        ycrop_start = floor((height-crop_size)/2);
-        ycrop_end = ycrop_start + crop_size;
-        xcrop_start = floor((width-crop_size)/2);
-        xcrop_end = xcrop_start + crop_size;
-        acq_img = acq_img(ycrop_start:ycrop_end, xcrop_start:xcrop_end, :); 
-        %acq_img = image;
         waitbar(4/4)    
         close(wb)
     end
@@ -60,14 +51,6 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
     if(strcmp(trajInfo.method, 'Radial'))
         rad_img = MRI_radial(image, klines, kpoints);
         
-        %crop image result
-        [height, width, dim] = size(rad_img);
-        crop_size = 199;
-        ycrop_start = floor((height-crop_size)/2);
-        ycrop_end = ycrop_start + crop_size;
-        xcrop_start = floor((width-crop_size)/2);
-        xcrop_end = xcrop_start + crop_size;
-      	acq_img = rad_img(ycrop_start:ycrop_end, xcrop_start:xcrop_end, :);
     end
     
     
