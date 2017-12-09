@@ -1125,7 +1125,7 @@ img = handles.compareImage;
 img2 = handles.inputPhantom;
 switch get(handles.kstepMenu, 'value')
     case 1
-        if (kStep < 7 || kStep > 16)
+        if (kStep < 8 || kStep > 16)
             msgbox('K-Step must be greater than 8');
         else
             %shows the result in the compare images panel
@@ -1138,7 +1138,7 @@ switch get(handles.kstepMenu, 'value')
             guidata(hObject, handles);  
         end
      case 2
-        if (kStep < 7 || kStep > 16)   %kStep < 1 to show direct k = [kStepNo, kStepNo] in Scratch
+        if (kStep < 8 || kStep > 16)   %kStep < 1 to show direct k = [kStepNo, kStepNo] in Scratch
             msgbox('K-Step must be in the range 7 to 16');
         else
             %shows the result in the compare images panel
