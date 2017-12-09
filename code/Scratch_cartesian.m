@@ -15,7 +15,7 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
         
         N = length(image);
         k = [round(N/klines), round(N/kpoints)];
-        display(N);
+        %display(N);
         display(k);
         %k = [kStepNo, kStepNo]; %direct kStepNo < 3, best image clarity
         M = floor(N*k);

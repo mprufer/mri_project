@@ -1130,8 +1130,8 @@ img = handles.compareImage;
 img2 = handles.inputPhantom;
 switch get(handles.kstepMenu, 'value')
     case 1
-        if (kStep < 8 || kStep > 16)
-            msgbox('K-Step must be in the range 8 to 16');
+        if (kStep < 7 || kStep > 16)
+            msgbox('K-Step must be in the range 7 to 16');
         else
             %shows the result in the compare images panel
             [klines kpoints handles.compareImage] = AccquisiteMRIImage(kStep, img2, handles.trajInfo);
