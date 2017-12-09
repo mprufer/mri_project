@@ -1131,7 +1131,7 @@ img2 = handles.inputPhantom;
 switch get(handles.kstepMenu, 'value')
     case 1
         if (kStep < 8 || kStep > 16)
-            msgbox('K-Step must be greater than 8');
+            msgbox('K-Step must be in the range 8 to 16');
         else
             %shows the result in the compare images panel
             [klines kpoints handles.compareImage] = AccquisiteMRIImage(kStep, img2, handles.trajInfo);
@@ -1144,7 +1144,7 @@ switch get(handles.kstepMenu, 'value')
         end
      case 2
         if (kStep < 4 || kStep > 16)   %kStep < 1 to show direct k = [kStepNo, kStepNo] in Scratch
-            msgbox('K-Step must be in the range 7 to 16');
+            msgbox('K-Step must be in the range 4 to 16');
         else
             %shows the result in the compare images panel
             [klines kpoints handles.compareImage] = Scratch_cartesian(kStep, img2, handles.trajInfo);
