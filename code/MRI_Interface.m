@@ -22,7 +22,7 @@ function varargout = MRI_Interface(varargin)
 
 % Edit the above text to modify the response to help test
 
-% Last Modified by GUIDE v2.5 07-Dec-2017 11:51:50
+% Last Modified by GUIDE v2.5 09-Dec-2017 09:28:23
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -542,8 +542,13 @@ function pushbutton_Run_Callback(hObject, eventdata, handles)
 if handles.inputPhantom == -1
     msgbox('You have to choose one phantom first', 'Message Box');
 else
-%     handles.trajInfo.num_lines = floor(param1Val);
-%     handles.trajInfo.num_points_per_line = floor(param2Val);
+     klines = str2double(get(handles.edit_numlines, 'String'));
+     kpoints = str2double(get(handles.edit_numpoints, 'String'));
+     handles.trajInfo.num_lines = klines;
+     handles.trajInfo.num_points_per_line = kpoints;
+     set(handles.text_param1Val, 'String', num2str(klines));
+     set(handles.text_param2Val, 'String', num2str(kpoints));
+
     [resultPhantom outputMessage] =  AcquireMRIImage(handles.inputPhantom, handles.trajInfo);
     %msgbox(outputMessage, 'MRI accquisiton message');
     %[handles.compareImg] = CompareImages(handles.inputPhantom, resultPhantom);        
@@ -1138,7 +1143,7 @@ switch get(handles.kstepMenu, 'value')
             guidata(hObject, handles);  
         end
      case 2
-        if (kStep < 8 || kStep > 16)   %kStep < 1 to show direct k = [kStepNo, kStepNo] in Scratch
+        if (kStep < 4 || kStep > 16)   %kStep < 1 to show direct k = [kStepNo, kStepNo] in Scratch
             msgbox('K-Step must be in the range 7 to 16');
         else
             %shows the result in the compare images panel

@@ -5,12 +5,18 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
     klines = round(trajInfo.num_lines *(kStepNo/10));
     kpoints = round(trajInfo.num_points_per_line *(kStepNo/10));
     
+    %klines = round(trajInfo.num_lines / kStepNo);
+    %kpoints = round(trajInfo.num_points_per_line / kStepNo);
+    %klines = trajInfo.num_lines;
+    %kpoints = trajInfo.num_points_per_line;
     %kstep function for Cartesian
     if(strcmp(trajInfo.method, 'Cartesian'))
         wb = waitbar(0,'Please wait...');
         
         N = length(image);
         k = [round(N/klines), round(N/kpoints)];
+        %display(N);
+        %display(k);
         %k = [kStepNo, kStepNo]; %direct kStepNo < 3, best image clarity
         M = floor(N*k);
         display(M);
@@ -27,7 +33,7 @@ function [klines kpoints acq_img] = kStep(kStepNo, image, trajInfo)
 
         S = size(Sample);
         display(S);
-
+        M = S;
         waitbar(2/4)
     
         F2(M(1)/2-floor(S(1)/2)+1:(M(1)/2+floor(S(1)/2)),  M(2)/2-floor(S(2)/2)+1:(M(2)/2+floor(S(2)/2))) = Sample;
